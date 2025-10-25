@@ -1,0 +1,82 @@
+const code = `import java.io.*;
+import java.util.*;
+class Main{
+    static class Node{
+        int val;
+        Node left,right;
+        Node(int v){val=v;}
+    }
+    static Node insert(Node root,int v){
+        if(root==null){
+            return new Node(v);
+        }else{
+            if(v<root.val){
+                root.left=insert(root.left,v);
+            }else{
+                root.right=insert(root.right,v);
+            }
+            return root;
+        }
+    }
+    static Node trim(Node root,int L,int R){
+        if(root==null){
+            return null;
+        }else{
+            if(root.val<L){
+                return trim(root.right,L,R);
+            }else if(root.val>R){
+                return trim(root.left,L,R);
+            }else{
+                root.left=trim(root.left,L,R);
+                root.right=trim(root.right,L,R);
+                return root;
+            }
+        }
+    }
+    static void preorder(Node root){
+        if(root!=null){
+            System.out.print(root.val+" ");
+            preorder(root.left);
+            preorder(root.right);
+        }
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int t=sc.nextInt();
+        while(t-->0){
+            int n=sc.nextInt();
+            int L=sc.nextInt();
+            int R=sc.nextInt();
+            Node root=null;
+            for(int i=0;i<n;i++){
+                root=insert(root,sc.nextInt());
+            }
+            root=trim(root,L,R);
+            preorder(root);
+            System.out.println();
+        }
+    }
+}
+
+
+
+`;
+
+// Find the <div class="monaco-editor"> inside ngx-monaco-editor
+const container = document.querySelector('#editor .monaco-editor');
+
+if (!container) {
+    console.error("❌ Monaco editor container not found.");
+} else {
+    // Grab the internal Monaco editor instance
+    const editorInstance = monaco.editor.getEditors().find(
+        e => e.getDomNode() === container
+    );
+
+    if (editorInstance) {
+        editorInstance.setValue(code);
+        console.log("✅ Code successfully injected into ngx-monaco-editor.");
+    } else {
+        console.error("❌ Monaco editor instance not found. Make sure the editor is initialized.");
+    }
+}
